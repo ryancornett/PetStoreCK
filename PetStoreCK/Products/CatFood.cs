@@ -2,7 +2,7 @@
 
 namespace PetStore
 {
-    public class CatFood : Product
+        public class CatFood : Product
     {
         public bool KittenFood { get; set; }
     }

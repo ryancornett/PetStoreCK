@@ -1,10 +1,11 @@
 ﻿namespace PetStore
 {
-    public class ProductLogic : IProductLogic
+    /// <summary>
+    /// Provides the logic for working with products
+    /// </summary>
+    public class ProductLogic : IProductLogic, IList
     {
         public List<Product> _products;
-        public Dictionary<string, DogLeash> _dogLeash;
-        public Dictionary<string, CatFood> _catFood;
         public ProductLogic()
         {
             _products = new List<Product>()
@@ -32,29 +33,27 @@
                     Quantity = 144,
                     Description = "Curdled goodness for your feline companion.",
                     KittenFood = true
+                },
+                new Product()
+                {
+                    Name = "Chew Toy",
+                    Price = 7.99M,
+                    Quantity = 8,
+                    Description = "lorem"
                 }
             };
-            _dogLeash = new Dictionary<string, DogLeash>();
-            _catFood = new Dictionary<string, CatFood>();
-        }
+    }
+        
         public void AddProduct(Product product)
         {
-            if (product is DogLeash)
-            {
-                _dogLeash.Add(product.Name, product as DogLeash);
-
-            }
-            if (product is CatFood)
-            {
-                _catFood.Add(product.Name, product as CatFood);
-            }
             _products.Add(product);
         }
-        public DogLeash GetDogLeashByName(string name)
+
+        public DogLeash GetDogLeashByName(string? name)
         {
             try
             {
-                return _dogLeash[name];
+                return _products.OfType<DogLeash>().FirstOrDefault(leash => leash.Name == name);
             }
             catch (Exception ex)
             {
@@ -73,7 +72,7 @@
 
         public decimal GetTotalPriceOfInventory()
         {
-            var total = 0m;
+            decimal total = 0m;
             var inStock = GetOnlyInStockProducts();
             foreach (var product in inStock)
             {
